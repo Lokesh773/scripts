@@ -8,7 +8,7 @@ if [[ $OUT == '' ]]; then
 fi
 
 REPO="zenx_updater" # Name of the update repo
-REMOTE="https://github.com/ZenX-OS" # URL to the remote git
+REMOTE="https://github.com/Lokesh773" # URL to the remote git
 BRANCH="ten" # Default branch name
 DEVICE=$(basename $OUT) # Device name
 ZIP_PATH=$(find $OUT -maxdepth 1 -type f -name "ZenX-OS*.zip" | sed -n -e "1{p;q}")
@@ -38,6 +38,16 @@ else
 fi
 
 # Making sure device folder exists and is empty
+if [[ZIP == "ZenX-OS*-GApps.zip"]]; then
+if [[ -d $DEVICE-GApps ]]; then
+  cd $DEVICE-GApps
+  rm ./*
+else
+  echo "New device: ${DEVICE} - creating folder"
+  mkdir $DEVICE-GApps
+  cd $DEVICE-GApps
+fi
+else
 if [[ -d $DEVICE ]]; then
   cd $DEVICE
   rm ./*
@@ -46,7 +56,7 @@ else
   mkdir $DEVICE
   cd $DEVICE
 fi
-
+fi
 # Copying generated Changelog and .json file and committing changes
 cp "${OUT}/${DEVICE}.json" ./
 cp "${OUT}/system/etc/Changelog.txt" ./
